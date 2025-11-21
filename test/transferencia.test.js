@@ -5,9 +5,13 @@ const { getToken } = require("../helpers/autenticacao");
 
 describe("Transferências", () => {
   describe("POST /transferencias", () => {
-    it("When sending a transfer greater or equal to R$ 10,00, then return 201", async () => {
-      const token = await getToken("julio.lima", "123456");
+    let token;
 
+    beforeEach(async () => {
+      token = await getToken("julio.lima", "123456");
+    });
+
+    it("When sending a transfer greater or equal to R$ 10,00, then return 201", async () => {
       const response = await request(process.env.BASE_URL)
         .post("/transferencias")
         .set("Content-Type", "application/json")
@@ -23,8 +27,6 @@ describe("Transferências", () => {
     });
 
     it("When sending a transfer less than R$ 10,00, then return 422", async () => {
-      const token = await getToken("julio.lima", "123456");
-
       const response = await request("http://localhost:3000")
         .post("/transferencias")
         .set("Content-Type", "application/json")
