@@ -1,19 +1,12 @@
 const request = require("supertest");
 const { expect } = require("chai");
 require("dotenv").config();
+const { getToken } = require("../helpers/autenticacao");
 
 describe("Transferências", () => {
   describe("POST /transferencias", () => {
     it("When sending a transfer greater or equal to R$ 10,00, then return 201", async () => {
-      const responseLogin = await request(process.env.BASE_URL)
-        .post("/login")
-        .set("Content-Type", "application/json")
-        .send({
-          username: "julio.lima",
-          senha: "123456",
-        });
-
-      const token = responseLogin.body.token;
+      const token = await getToken("julio.lima", "123456");
 
       const response = await request(process.env.BASE_URL)
         .post("/transferencias")
@@ -30,15 +23,7 @@ describe("Transferências", () => {
     });
 
     it("When sending a transfer less than R$ 10,00, then return 422", async () => {
-      const responseLogin = await request("http://localhost:3000")
-        .post("/login")
-        .set("Content-Type", "application/json")
-        .send({
-          username: "julio.lima",
-          senha: "123456",
-        });
-
-      const token = responseLogin.body.token;
+      const token = await getToken("julio.lima", "123456");
 
       const response = await request("http://localhost:3000")
         .post("/transferencias")
