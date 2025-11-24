@@ -59,8 +59,6 @@ describe("Transferências", () => {
         .get("/transferencias?page=1&limit=10")
         .set("Authorization", `Bearer ${token}`);
 
-      console.log(response.body);
-
       expect(response.status).to.equal(200);
       expect(response.body.page).to.equal(1);
       expect(response.body.limit).to.equal(10);
